@@ -12,6 +12,7 @@ const isLoading = ref(false)
 const searchQuery = ref('')
 const searchResults = ref([])
 const isSearching = ref(false)
+const isGuideOpen = ref(false)
 
 const availableInterests = [
   'Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy', 'Mystery',
@@ -108,7 +109,7 @@ const getRecommendations = async () => {
     <!-- Main Content Area -->
     <div class="flex-1 pt-16 pb-20 overflow-y-auto">
       <!-- Desktop User Type Selection -->
-      <div class="mb-8 hidden md:block">
+      <div class="hidden md:block p-4 md:p-8 lg:p-12 max-w-7xl mx-auto">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">Are you a new or existing reader?</h2>
         <div class="flex space-x-4">
           <button 
@@ -137,7 +138,82 @@ const getRecommendations = async () => {
       </div>
 
       <!-- Content -->
-      <div class="p-4">
+      <div class="p-4 md:p-8 lg:p-12 max-w-7xl mx-auto">
+        <!-- Guide Section -->
+        <div class="mb-6">
+          <button 
+            @click="isGuideOpen = !isGuideOpen"
+            class="w-full flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 transition-all duration-300 ease-in-out cursor-pointer"
+          >
+            <div class="flex items-center gap-2">
+              <svg 
+                class="w-5 h-5 text-indigo-600 transition-transform duration-300" 
+                :class="{ 'rotate-45': isGuideOpen }"
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span class="font-medium text-gray-800">How to use BookMatch</span>
+            </div>
+            <svg 
+              class="w-5 h-5 text-gray-500 transform transition-transform duration-300 ease-in-out" 
+              :class="{ 'rotate-180': isGuideOpen }"
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+          
+          <transition
+            enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="opacity-0 transform -translate-y-2"
+            enter-to-class="opacity-100 transform translate-y-0"
+            leave-active-class="transition-all duration-300 ease-in"
+            leave-from-class="opacity-100 transform translate-y-0"
+            leave-to-class="opacity-0 transform -translate-y-2"
+          >
+            <div 
+              v-if="isGuideOpen"
+              class="mt-2 p-4 bg-white rounded-lg border border-gray-200 space-y-3"
+            >
+              <div class="space-y-2">
+                <h4 class="font-medium text-gray-800">For New Readers:</h4>
+                <p class="text-sm text-gray-600">
+                  Select up to 3 interests that match your preferences. We'll use AI to find books you'll love based on your interests.
+                </p>
+              </div>
+              
+              <div class="space-y-2">
+                <h4 class="font-medium text-gray-800">For Existing Readers:</h4>
+                <p class="text-sm text-gray-600">
+                  Add books you've already read and enjoyed. We'll analyze your reading history to suggest new books that match your taste.
+                </p>
+              </div>
+              
+              <div class="space-y-2">
+                <h4 class="font-medium text-gray-800">Our Goal:</h4>
+                <p class="text-sm text-gray-600">
+                  BookMatch helps you discover your next favorite book by combining AI recommendations with your personal preferences.
+                </p>
+              </div>
+            </div>
+          </transition>
+        </div>
+
         <!-- New Reader Section -->
         <div v-if="userType === 'new'" class="space-y-6">
           <div v-if="interests.length < 3">
@@ -145,37 +221,68 @@ const getRecommendations = async () => {
               Select your interests ({{ interests.length }} out of 3)
             </h3>
             <div class="flex flex-wrap gap-2 mb-4">
-              <span 
-                v-for="interest in interests" 
-                :key="interest"
-                class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full flex items-center gap-2"
+              <transition-group
+                enter-active-class="transition-all duration-300 ease-out"
+                enter-from-class="opacity-0 transform scale-95"
+                enter-to-class="opacity-100 transform scale-100"
+                leave-active-class="transition-all duration-300 ease-in"
+                leave-from-class="opacity-100 transform scale-100"
+                leave-to-class="opacity-0 transform scale-95"
               >
-                {{ interest }}
-                <button @click="removeInterest(interest)" class="text-indigo-600 hover:text-indigo-800">
-                  ×
-                </button>
-              </span>
+                <span 
+                  v-for="interest in interests" 
+                  :key="interest"
+                  class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full flex items-center gap-2"
+                >
+                  {{ interest }}
+                  <button @click="removeInterest(interest)" class="text-indigo-600 hover:text-indigo-800 cursor-pointer transition-colors duration-200">
+                    ×
+                  </button>
+                </span>
+              </transition-group>
             </div>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
               <button 
                 v-for="interest in availableInterests" 
                 :key="interest"
                 @click="addInterest(interest)"
                 :disabled="interests.includes(interest) || interests.length >= 3"
-                class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-200"
               >
                 {{ interest }}
               </button>
             </div>
           </div>
 
+          <!-- Loading State -->
+          <transition
+            enter-active-class="transition-opacity duration-300 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition-opacity duration-300 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+          >
+            <div v-if="isLoading" class="text-center py-8">
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+              <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
+            </div>
+          </transition>
+
           <!-- Recommendations -->
-          <div v-if="recommendations.length > 0" class="space-y-4">
-            <h3 class="text-xl font-semibold text-gray-800">Your Recommendations</h3>
+          <transition-group
+            enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="opacity-0 transform translate-y-4"
+            enter-to-class="opacity-100 transform translate-y-0"
+            leave-active-class="transition-all duration-300 ease-in"
+            leave-from-class="opacity-100 transform translate-y-0"
+            leave-to-class="opacity-0 transform translate-y-4"
+            class="space-y-6"
+          >
             <div 
               v-for="book in recommendations" 
               :key="book.id"
-              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300"
             >
               <div class="flex gap-6">
                 <img 
@@ -204,18 +311,21 @@ const getRecommendations = async () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          <!-- Loading State -->
-          <div v-if="isLoading" class="text-center py-8">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-            <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
-          </div>
+          </transition-group>
 
           <!-- No Recommendations -->
-          <div v-if="!isLoading && recommendations.length === 0 && interests.length > 0" class="text-center py-8">
-            <p class="text-gray-600">No recommendations found. Try selecting different interests.</p>
-          </div>
+          <transition
+            enter-active-class="transition-opacity duration-300 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition-opacity duration-300 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+          >
+            <div v-if="!isLoading && recommendations.length === 0 && interests.length > 0" class="text-center py-8">
+              <p class="text-gray-600">No recommendations found. Try selecting different interests.</p>
+            </div>
+          </transition>
         </div>
 
         <!-- Existing Reader Section -->
@@ -293,7 +403,7 @@ const getRecommendations = async () => {
                     </div>
                     <button 
                       @click="removeBook(book)"
-                      class="text-red-500 hover:text-red-700"
+                      class="text-red-500 hover:text-red-700 cursor-pointer"
                     >
                       Remove
                     </button>
@@ -307,11 +417,11 @@ const getRecommendations = async () => {
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10 md:hidden">
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10 md:hidden transition-transform duration-300 ease-in-out">
       <div class="flex justify-around items-center h-16">
         <button 
           @click="switchToNewReader"
-          class="flex flex-col items-center justify-center w-full h-full"
+          class="flex flex-col items-center justify-center w-full h-full cursor-pointer"
           :class="userType === 'new' ? 'text-indigo-600' : 'text-gray-500'"
         >
           <svg 
@@ -334,7 +444,7 @@ const getRecommendations = async () => {
         
         <button 
           @click="switchToExistingReader"
-          class="flex flex-col items-center justify-center w-full h-full"
+          class="flex flex-col items-center justify-center w-full h-full cursor-pointer"
           :class="userType === 'existing' ? 'text-indigo-600' : 'text-gray-500'"
         >
           <svg 
