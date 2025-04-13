@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { searchBooks, getRecommendationsByInterests, getRecommendationsByBooks } from '../utils/googleBooks'
+import { searchBooks } from '../utils/googleBooks'
+import { getBookRecommendationsByInterests } from '../utils/gemini'
 
 const userType = ref('new') // 'new' or 'existing'
 const interests = ref([])
@@ -39,16 +40,21 @@ const switchToExistingReader = () => {
   userType.value = 'existing'
 }
 
-const addInterest = (interest) => {
+const addInterest = async (interest) => {
   if (interests.value.length < 3 && !interests.value.includes(interest)) {
     interests.value.push(interest)
     // Automatically get recommendations when an interest is selected
-    getRecommendations()
+    await getRecommendations()
   }
 }
 
-const removeInterest = (interest) => {
+const removeInterest = async (interest) => {
   interests.value = interests.value.filter(i => i !== interest)
+  if (interests.value.length > 0) {
+    await getRecommendations()
+  } else {
+    recommendations.value = []
+  }
 }
 
 const addBook = (book) => {
@@ -80,13 +86,14 @@ const searchForBooks = async () => {
 }
 
 const getRecommendations = async () => {
+  if (interests.value.length === 0) {
+    recommendations.value = []
+    return
+  }
+
   isLoading.value = true
   try {
-    if (userType.value === 'new') {
-      recommendations.value = await getRecommendationsByInterests(interests.value)
-    } else {
-      recommendations.value = await getRecommendationsByBooks(readBooks.value)
-    }
+    recommendations.value = await getBookRecommendationsByInterests(interests.value)
   } catch (error) {
     console.error('Error getting recommendations:', error)
     recommendations.value = []
@@ -162,12 +169,6 @@ const getRecommendations = async () => {
             </div>
           </div>
 
-          <!-- Loading State -->
-          <div v-if="isLoading" class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-            <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
-          </div>
-
           <!-- Recommendations -->
           <div v-if="recommendations.length > 0" class="space-y-4">
             <h3 class="text-xl font-semibold text-gray-800">Your Recommendations</h3>
@@ -186,8 +187,8 @@ const getRecommendations = async () => {
                 <div class="flex-1">
                   <h4 class="text-lg font-semibold text-gray-800">{{ book.title }}</h4>
                   <p class="text-gray-600">{{ book.authors.join(', ') }}</p>
-                  <p class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
-                  <div class="mt-4 flex flex-wrap gap-2">
+                  <p v-if="book.description" class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
+                  <div v-if="book.categories" class="mt-4 flex flex-wrap gap-2">
                     <span 
                       v-for="category in book.categories" 
                       :key="category"
@@ -203,6 +204,17 @@ const getRecommendations = async () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- Loading State -->
+          <div v-if="isLoading" class="text-center py-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+            <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
+          </div>
+
+          <!-- No Recommendations -->
+          <div v-if="!isLoading && recommendations.length === 0 && interests.length > 0" class="text-center py-8">
+            <p class="text-gray-600">No recommendations found. Try selecting different interests.</p>
           </div>
         </div>
 
