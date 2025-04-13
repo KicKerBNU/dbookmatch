@@ -1,11 +1,4 @@
-<template>
-  <nav class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo and Site Name -->
-        <div class="flex items-center">
-          <div class="flex-shrink-0 flex items-center">
-            <!-- Modern Logo SVG -->
+<!-- Modern Logo SVG -->
             <svg 
               class="h-10 w-10 text-indigo-600" 
               viewBox="0 0 40 40" 
@@ -48,14 +41,3 @@
                 fill="currentColor"
               />
             </svg>
-            <span class="ml-3 text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">dbookmatch.com</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-</template>
-
-<script setup>
-// Component logic can be added here if needed
-</script> 

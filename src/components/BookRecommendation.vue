@@ -42,6 +42,8 @@ const switchToExistingReader = () => {
 const addInterest = (interest) => {
   if (interests.value.length < 3 && !interests.value.includes(interest)) {
     interests.value.push(interest)
+    // Automatically get recommendations when an interest is selected
+    getRecommendations()
   }
 }
 
@@ -96,13 +98,6 @@ const getRecommendations = async () => {
 
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
-    <!-- Top Navigation Bar -->
-    <div class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-10">
-      <div class="p-4">
-        <h2 class="text-xl font-bold text-gray-800">DBookMatch</h2>
-      </div>
-    </div>
-
     <!-- Main Content Area -->
     <div class="flex-1 pt-16 pb-20 overflow-y-auto">
       <!-- Desktop User Type Selection -->
@@ -138,8 +133,10 @@ const getRecommendations = async () => {
       <div class="p-4">
         <!-- New Reader Section -->
         <div v-if="userType === 'new'" class="space-y-6">
-          <div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Select your interests (up to 3)</h3>
+          <div v-if="interests.length < 3">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Select your interests ({{ interests.length }} out of 3)
+            </h3>
             <div class="flex flex-wrap gap-2 mb-4">
               <span 
                 v-for="interest in interests" 
@@ -162,6 +159,49 @@ const getRecommendations = async () => {
               >
                 {{ interest }}
               </button>
+            </div>
+          </div>
+
+          <!-- Loading State -->
+          <div v-if="isLoading" class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+            <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
+          </div>
+
+          <!-- Recommendations -->
+          <div v-if="recommendations.length > 0" class="space-y-4">
+            <h3 class="text-xl font-semibold text-gray-800">Your Recommendations</h3>
+            <div 
+              v-for="book in recommendations" 
+              :key="book.id"
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+            >
+              <div class="flex gap-6">
+                <img 
+                  v-if="book.thumbnail" 
+                  :src="book.thumbnail" 
+                  :alt="book.title"
+                  class="w-24 h-36 object-cover rounded-lg"
+                />
+                <div class="flex-1">
+                  <h4 class="text-lg font-semibold text-gray-800">{{ book.title }}</h4>
+                  <p class="text-gray-600">{{ book.authors.join(', ') }}</p>
+                  <p class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    <span 
+                      v-for="category in book.categories" 
+                      :key="category"
+                      class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
+                    >
+                      {{ category }}
+                    </span>
+                  </div>
+                  <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
+                    <span class="text-yellow-500">★</span>
+                    <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -246,60 +286,6 @@ const getRecommendations = async () => {
                       Remove
                     </button>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Get Recommendations Button -->
-        <div class="mt-8">
-          <button 
-            @click="getRecommendations"
-            :disabled="(userType === 'new' && interests.length === 0) || (userType === 'existing' && readBooks.length === 0)"
-            class="w-full py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Get Book Recommendations
-          </button>
-        </div>
-
-        <!-- Loading State -->
-        <div v-if="isLoading" class="mt-8 text-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
-        </div>
-
-        <!-- Recommendations -->
-        <div v-if="recommendations.length > 0" class="mt-8 space-y-4">
-          <h3 class="text-xl font-semibold text-gray-800">Your Recommendations</h3>
-          <div 
-            v-for="book in recommendations" 
-            :key="book.id"
-            class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
-          >
-            <div class="flex gap-6">
-              <img 
-                v-if="book.thumbnail" 
-                :src="book.thumbnail" 
-                :alt="book.title"
-                class="w-24 h-36 object-cover rounded-lg"
-              />
-              <div class="flex-1">
-                <h4 class="text-lg font-semibold text-gray-800">{{ book.title }}</h4>
-                <p class="text-gray-600">{{ book.authors.join(', ') }}</p>
-                <p class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span 
-                    v-for="category in book.categories" 
-                    :key="category"
-                    class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
-                  >
-                    {{ category }}
-                  </span>
-                </div>
-                <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
-                  <span class="text-yellow-500">★</span>
-                  <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
                 </div>
               </div>
             </div>
