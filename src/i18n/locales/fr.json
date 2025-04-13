@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "BookMatch",
+    "description": "Découvrez votre prochain livre préféré avec des recommandations basées sur l'IA"
+  },
+  "userType": {
+    "title": "Êtes-vous un nouveau lecteur ou un lecteur expérimenté ?",
+    "newReader": "Nouveau Lecteur",
+    "existingReader": "Lecteur expérimenté"
+  },
+  "guide": {
+    "title": "Comment utiliser BookMatch",
+    "newReader": {
+      "title": "Pour les Nouveaux Lecteurs :",
+      "description": "Sélectionnez jusqu'à 3 centres d'intérêt qui correspondent à vos préférences. Nous utiliserons l'IA pour trouver des livres que vous adorerez en fonction de vos intérêts."
+    },
+    "existingReader": {
+      "title": "Pour les Lecteurs Expérimentés :",
+      "description": "Ajoutez des livres que vous avez déjà lus et appréciés. Nous analyserons votre historique de lecture pour suggérer de nouveaux livres qui correspondent à vos goûts."
+    },
+    "goal": {
+      "title": "Notre Objectif :",
+      "description": "BookMatch vous aide à découvrir votre prochain livre préféré en combinant les recommandations de l'IA avec vos préférences personnelles."
+    }
+  },
+  "newReader": {
+    "interests": {
+      "title": "Sélectionnez vos centres d'intérêt ({count} sur 3)",
+      "description": "Sélectionnez jusqu'à 3 centres d'intérêt qui correspondent à vos préférences. Nous utiliserons l'IA pour trouver des livres que vous adorerez en fonction de vos intérêts.",
+      "noRecommendations": "Aucune recommandation trouvée. Essayez de sélectionner d'autres centres d'intérêt.",
+      "available": {
+        "fiction": "Fiction",
+        "nonFiction": "Non-Fiction",
+        "scienceFiction": "Science-Fiction",
+        "fantasy": "Fantaisie",
+        "mystery": "Mystère",
+        "romance": "Romance",
+        "biography": "Biographie",
+        "history": "Histoire",
+        "selfHelp": "Développement Personnel",
+        "business": "Affaires",
+        "technology": "Technologie",
+        "science": "Science",
+        "philosophy": "Philosophie",
+        "psychology": "Psychologie",
+        "art": "Art"
+      }
+    }
+  },
+  "existingReader": {
+    "title": "Ajoutez des livres que vous avez lus",
+    "search": {
+      "placeholder": "Rechercher un livre...",
+      "loading": "Recherche de livres..."
+    },
+    "books": {
+      "title": "Vos Livres",
+      "getRecommendations": "Obtenir des Recommandations",
+      "noRecommendations": "Cliquez sur \"Obtenir des Recommandations\" pour trouver des livres basés sur votre historique de lecture."
+    }
+  },
+  "book": {
+    "ratings": "évaluations",
+    "remove": "Supprimer"
+  },
+  "loading": {
+    "findingBooks": "Recherche des livres parfaits pour vous..."
+  }
+} 

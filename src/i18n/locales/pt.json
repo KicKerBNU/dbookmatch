@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "BookMatch",
+    "description": "Descubra seu próximo livro favorito com recomendações baseadas em IA"
+  },
+  "userType": {
+    "title": "Você é um leitor novo ou existente?",
+    "newReader": "Novo Leitor",
+    "existingReader": "Leitor experiente"
+  },
+  "guide": {
+    "title": "Como usar o BookMatch",
+    "newReader": {
+      "title": "Para Novos Leitores:",
+      "description": "Selecione até 3 interesses que correspondam às suas preferências. Usaremos IA para encontrar livros que você vai adorar com base nos seus interesses."
+    },
+    "existingReader": {
+      "title": "Para Leitores Existentes:",
+      "description": "Adicione livros que você já leu e gostou. Analisaremos seu histórico de leitura para sugerir novos livros que combinem com seu gosto."
+    },
+    "goal": {
+      "title": "Nosso Objetivo:",
+      "description": "O BookMatch ajuda você a descobrir seu próximo livro favorito combinando recomendações de IA com suas preferências pessoais."
+    }
+  },
+  "newReader": {
+    "interests": {
+      "title": "Selecione seus interesses ({count} de 3)",
+      "description": "Selecione até 3 interesses que correspondam às suas preferências. Usaremos IA para encontrar livros que você vai adorar com base nos seus interesses.",
+      "noRecommendations": "Nenhuma recomendação encontrada. Tente selecionar interesses diferentes.",
+      "available": {
+        "fiction": "Ficção",
+        "nonFiction": "Não-Ficção",
+        "scienceFiction": "Ficção Científica",
+        "fantasy": "Fantasia",
+        "mystery": "Mistério",
+        "romance": "Romance",
+        "biography": "Biografia",
+        "history": "História",
+        "selfHelp": "Autoajuda",
+        "business": "Negócios",
+        "technology": "Tecnologia",
+        "science": "Ciência",
+        "philosophy": "Filosofia",
+        "psychology": "Psicologia",
+        "art": "Arte"
+      }
+    }
+  },
+  "existingReader": {
+    "title": "Adicione livros que você leu",
+    "search": {
+      "placeholder": "Pesquise um livro...",
+      "loading": "Pesquisando livros..."
+    },
+    "books": {
+      "title": "Seus Livros",
+      "getRecommendations": "Obter Recomendações",
+      "noRecommendations": "Clique em \"Obter Recomendações\" para encontrar livros baseados no seu histórico de leitura."
+    }
+  },
+  "book": {
+    "ratings": "avaliações",
+    "remove": "Remover"
+  },
+  "loading": {
+    "findingBooks": "Encontrando os livros perfeitos para você..."
+  }
+} 

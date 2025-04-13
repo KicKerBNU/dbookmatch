@@ -25,9 +25,21 @@ const isGuideOpen = ref(false)
 const addedBooks = ref([])
 
 const availableInterests = [
-  'Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy', 'Mystery',
-  'Romance', 'Biography', 'History', 'Self-Help', 'Business',
-  'Technology', 'Science', 'Philosophy', 'Psychology', 'Art'
+  'newReader.interests.available.fiction',
+  'newReader.interests.available.nonFiction',
+  'newReader.interests.available.scienceFiction',
+  'newReader.interests.available.fantasy',
+  'newReader.interests.available.mystery',
+  'newReader.interests.available.romance',
+  'newReader.interests.available.biography',
+  'newReader.interests.available.history',
+  'newReader.interests.available.selfHelp',
+  'newReader.interests.available.business',
+  'newReader.interests.available.technology',
+  'newReader.interests.available.science',
+  'newReader.interests.available.philosophy',
+  'newReader.interests.available.psychology',
+  'newReader.interests.available.art'
 ]
 
 const clearAllData = () => {
@@ -138,7 +150,7 @@ const getRecommendations = async () => {
     <div class="flex-1 pt-16 pb-20 overflow-y-auto">
       <!-- Desktop User Type Selection -->
       <div class="hidden md:block p-4 md:p-8 lg:p-12 max-w-7xl mx-auto">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Are you a new or existing reader?</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ $t('userType.title') }}</h2>
         <div class="flex space-x-4">
           <button 
             @click="switchToNewReader"
@@ -149,7 +161,7 @@ const getRecommendations = async () => {
                 : 'bg-white text-gray-700 border border-gray-300'
             ]"
           >
-            New Reader
+            {{ $t('userType.newReader') }}
           </button>
           <button 
             @click="switchToExistingReader"
@@ -160,7 +172,7 @@ const getRecommendations = async () => {
                 : 'bg-white text-gray-700 border border-gray-300'
             ]"
           >
-            Existing Reader
+            {{ $t('userType.existingReader') }}
           </button>
         </div>
       </div>
@@ -188,7 +200,7 @@ const getRecommendations = async () => {
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span class="font-medium text-gray-800">How to use BookMatch</span>
+              <span class="font-medium text-gray-800">{{ $t('guide.title') }}</span>
             </div>
             <svg 
               class="w-5 h-5 text-gray-500 transform transition-transform duration-300 ease-in-out" 
@@ -219,23 +231,23 @@ const getRecommendations = async () => {
               class="mt-2 p-4 bg-white rounded-lg border border-gray-200 space-y-3"
             >
               <div class="space-y-2">
-                <h4 class="font-medium text-gray-800">For New Readers:</h4>
+                <h4 class="font-medium text-gray-800">{{ $t('guide.newReader.title') }}</h4>
                 <p class="text-sm text-gray-600">
-                  Select up to 3 interests that match your preferences. We'll use AI to find books you'll love based on your interests.
+                  {{ $t('guide.newReader.description') }}
                 </p>
               </div>
               
               <div class="space-y-2">
-                <h4 class="font-medium text-gray-800">For Existing Readers:</h4>
+                <h4 class="font-medium text-gray-800">{{ $t('guide.existingReader.title') }}</h4>
                 <p class="text-sm text-gray-600">
-                  Add books you've already read and enjoyed. We'll analyze your reading history to suggest new books that match your taste.
+                  {{ $t('guide.existingReader.description') }}
                 </p>
               </div>
               
               <div class="space-y-2">
-                <h4 class="font-medium text-gray-800">Our Goal:</h4>
+                <h4 class="font-medium text-gray-800">{{ $t('guide.goal.title') }}</h4>
                 <p class="text-sm text-gray-600">
-                  BookMatch helps you discover your next favorite book by combining AI recommendations with your personal preferences.
+                  {{ $t('guide.goal.description') }}
                 </p>
               </div>
             </div>
@@ -246,7 +258,7 @@ const getRecommendations = async () => {
         <div v-if="userType === 'new'" class="space-y-6">
           <div v-if="interests.length < 3">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">
-              Select your interests ({{ interests.length }} out of 3)
+              {{ $t('newReader.interests.title', { count: interests.length }) }}
             </h3>
             <div class="flex flex-wrap gap-2 mb-4">
               <TransitionGroup
@@ -273,13 +285,13 @@ const getRecommendations = async () => {
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
               <button 
-                v-for="interest in availableInterests" 
-                :key="interest"
-                @click="addInterest(interest)"
-                :disabled="interests.includes(interest) || interests.length >= 3"
+                v-for="interestKey in availableInterests" 
+                :key="interestKey"
+                @click="addInterest($t(interestKey))"
+                :disabled="interests.includes($t(interestKey)) || interests.length >= 3"
                 class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-200"
               >
-                {{ interest }}
+                {{ $t(interestKey) }}
               </button>
             </div>
           </div>
@@ -295,7 +307,7 @@ const getRecommendations = async () => {
           >
             <div v-if="isLoading" class="text-center py-8">
               <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-              <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
+              <p class="mt-4 text-gray-600">{{ $t('loading.findingBooks') }}</p>
             </div>
           </transition>
 
@@ -336,7 +348,7 @@ const getRecommendations = async () => {
                     </div>
                     <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
                       <span class="text-yellow-500">★</span>
-                      <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
+                      <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} {{ $t('book.ratings') }})</span>
                     </div>
                   </div>
                 </div>
@@ -354,7 +366,7 @@ const getRecommendations = async () => {
             leave-to-class="opacity-0"
           >
             <div v-if="!isLoading && recommendations.length === 0 && interests.length > 0" class="text-center py-8">
-              <p class="text-gray-600">No recommendations found. Try selecting different interests.</p>
+              <p class="text-gray-600">{{ $t('newReader.interests.noRecommendations') }}</p>
             </div>
           </transition>
         </div>
@@ -362,13 +374,13 @@ const getRecommendations = async () => {
         <!-- Existing Reader Section -->
         <div v-else class="space-y-6">
           <div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Add books you've read</h3>
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ $t('existingReader.title') }}</h3>
             <div class="flex flex-col gap-4">
               <div class="flex gap-2">
                 <input 
                   v-model="searchQuery"
                   type="text"
-                  placeholder="Search for a book..."
+                  :placeholder="$t('existingReader.search.placeholder')"
                   class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   @input="debouncedSearch"
                 />
@@ -377,7 +389,7 @@ const getRecommendations = async () => {
               <!-- Search Results -->
               <div v-if="isSearching" class="text-center py-4">
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-                <p class="mt-2 text-gray-600">Searching books...</p>
+                <p class="mt-2 text-gray-600">{{ $t('existingReader.search.loading') }}</p>
               </div>
 
               <div v-else-if="searchResults.length > 0" class="space-y-2 max-h-60 overflow-y-auto">
@@ -414,13 +426,13 @@ const getRecommendations = async () => {
               <!-- Added Books -->
               <div v-if="readBooks.length > 0" class="mt-4">
                 <div class="flex justify-between items-center mb-2">
-                  <h4 class="text-lg font-semibold text-gray-800">Your Books</h4>
+                  <h4 class="text-lg font-semibold text-gray-800">{{ $t('existingReader.books.title') }}</h4>
                   <button 
                     @click="getRecommendations"
                     class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 cursor-pointer"
                     :disabled="isLoading"
                   >
-                    Get Recommendations
+                    {{ $t('existingReader.books.getRecommendations') }}
                   </button>
                 </div>
                 <div class="space-y-2">
@@ -445,7 +457,7 @@ const getRecommendations = async () => {
                       @click="removeBook(book)"
                       class="text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-200"
                     >
-                      Remove
+                      {{ $t('book.remove') }}
                     </button>
                   </div>
                 </div>
@@ -462,7 +474,7 @@ const getRecommendations = async () => {
               >
                 <div v-if="isLoading" class="text-center py-8">
                   <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-                  <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
+                  <p class="mt-4 text-gray-600">{{ $t('loading.findingBooks') }}</p>
                 </div>
               </transition>
 
@@ -477,7 +489,7 @@ const getRecommendations = async () => {
               >
                 <div key="existing-recommendations-container" class="space-y-6">
                   <div v-if="!isLoading && recommendations.length === 0 && readBooks.length > 0" class="text-center py-8">
-                    <p class="text-gray-600">Click "Get Recommendations" to find books based on your reading history.</p>
+                    <p class="text-gray-600">{{ $t('existingReader.books.noRecommendations') }}</p>
                   </div>
 
                   <div 
@@ -507,7 +519,7 @@ const getRecommendations = async () => {
                         </div>
                         <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
                           <span class="text-yellow-500">★</span>
-                          <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
+                          <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} {{ $t('book.ratings') }})</span>
                         </div>
                       </div>
                     </div>
@@ -541,7 +553,7 @@ const getRecommendations = async () => {
               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
             />
           </svg>
-          <span class="text-xs">New Reader</span>
+          <span class="text-xs">{{ $t('userType.newReader') }}</span>
         </button>
         
         <div class="h-8 w-px bg-gray-200"></div>
@@ -564,7 +576,7 @@ const getRecommendations = async () => {
               d="M4 6h16M4 10h16M4 14h16M4 18h16"
             />
           </svg>
-          <span class="text-xs">Existing Reader</span>
+          <span class="text-xs">{{ $t('userType.existingReader') }}</span>
         </button>
       </div>
     </div>

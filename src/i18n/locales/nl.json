@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "BookMatch",
+    "description": "Ontdek je volgende favoriete boek met AI-gestuurde aanbevelingen"
+  },
+  "userType": {
+    "title": "Ben je een nieuwe of ervaren lezer?",
+    "newReader": "Nieuwe Lezer",
+    "existingReader": "Ervaren Lezer"
+  },
+  "guide": {
+    "title": "Hoe BookMatch te gebruiken",
+    "newReader": {
+      "title": "Voor Nieuwe Lezers:",
+      "description": "Selecteer maximaal 3 interesses die bij je voorkeuren passen. We gebruiken AI om boeken te vinden die je leuk zult vinden op basis van je interesses."
+    },
+    "existingReader": {
+      "title": "Voor Ervaren Lezers:",
+      "description": "Voeg boeken toe die je al hebt gelezen en gewaardeerd. We analyseren je leesgeschiedenis om nieuwe boeken voor te stellen die bij je smaak passen."
+    },
+    "goal": {
+      "title": "Ons Doel:",
+      "description": "BookMatch helpt je je volgende favoriete boek te ontdekken door AI-aanbevelingen te combineren met je persoonlijke voorkeuren."
+    }
+  },
+  "newReader": {
+    "interests": {
+      "title": "Selecteer je interesses ({count} van 3)",
+      "description": "Selecteer maximaal 3 interesses die bij je voorkeuren passen. We gebruiken AI om boeken te vinden die je leuk zult vinden op basis van je interesses.",
+      "noRecommendations": "Geen aanbevelingen gevonden. Probeer andere interesses te selecteren.",
+      "available": {
+        "fiction": "Fictie",
+        "nonFiction": "Non-fictie",
+        "scienceFiction": "Sciencefiction",
+        "fantasy": "Fantasy",
+        "mystery": "Mysterie",
+        "romance": "Romantiek",
+        "biography": "Biografie",
+        "history": "Geschiedenis",
+        "selfHelp": "Persoonlijke Ontwikkeling",
+        "business": "Zakelijk",
+        "technology": "Technologie",
+        "science": "Wetenschap",
+        "philosophy": "Filosofie",
+        "psychology": "Psychologie",
+        "art": "Kunst"
+      }
+    }
+  },
+  "existingReader": {
+    "title": "Voeg gelezen boeken toe",
+    "search": {
+      "placeholder": "Zoek een boek...",
+      "loading": "Boeken zoeken..."
+    },
+    "books": {
+      "title": "Jouw Boeken",
+      "getRecommendations": "Aanbevelingen Ophalen",
+      "noRecommendations": "Klik op \"Aanbevelingen Ophalen\" om boeken te vinden op basis van je leesgeschiedenis."
+    }
+  },
+  "book": {
+    "ratings": "beoordelingen",
+    "remove": "Verwijderen"
+  },
+  "loading": {
+    "findingBooks": "De perfecte boeken voor jou zoeken..."
+  }
+} 

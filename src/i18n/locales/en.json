@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "BookMatch",
+    "description": "Discover your next favorite book with AI-powered recommendations"
+  },
+  "userType": {
+    "title": "Are you a new or existing reader?",
+    "newReader": "New Reader",
+    "existingReader": "Existing Reader"
+  },
+  "guide": {
+    "title": "How to use BookMatch",
+    "newReader": {
+      "title": "For New Readers:",
+      "description": "Select up to 3 interests that match your preferences. We'll use AI to find books you'll love based on your interests."
+    },
+    "existingReader": {
+      "title": "For Existing Readers:",
+      "description": "Add books you've already read and enjoyed. We'll analyze your reading history to suggest new books that match your taste."
+    },
+    "goal": {
+      "title": "Our Goal:",
+      "description": "BookMatch helps you discover your next favorite book by combining AI recommendations with your personal preferences."
+    }
+  },
+  "newReader": {
+    "interests": {
+      "title": "Select your interests ({count} out of 3)",
+      "description": "Select up to 3 interests that match your preferences. We'll use AI to find books you'll love based on your interests.",
+      "noRecommendations": "No recommendations found. Try selecting different interests.",
+      "available": {
+        "fiction": "Fiction",
+        "nonFiction": "Non-Fiction",
+        "scienceFiction": "Science Fiction",
+        "fantasy": "Fantasy",
+        "mystery": "Mystery",
+        "romance": "Romance",
+        "biography": "Biography",
+        "history": "History",
+        "selfHelp": "Self-Help",
+        "business": "Business",
+        "technology": "Technology",
+        "science": "Science",
+        "philosophy": "Philosophy",
+        "psychology": "Psychology",
+        "art": "Art"
+      }
+    }
+  },
+  "existingReader": {
+    "title": "Add books you've read",
+    "search": {
+      "placeholder": "Search for a book...",
+      "loading": "Searching books..."
+    },
+    "books": {
+      "title": "Your Books",
+      "getRecommendations": "Get Recommendations",
+      "noRecommendations": "Click \"Get Recommendations\" to find books based on your reading history."
+    }
+  },
+  "book": {
+    "ratings": "ratings",
+    "remove": "Remove"
+  },
+  "loading": {
+    "findingBooks": "Finding the perfect books for you..."
+  }
+} 

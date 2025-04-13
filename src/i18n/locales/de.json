@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "BookMatch",
+    "description": "Entdecken Sie Ihr nächstes Lieblingsbuch mit KI-gestützten Empfehlungen"
+  },
+  "userType": {
+    "title": "Sind Sie ein neuer oder erfahrener Leser?",
+    "newReader": "Neuer Leser",
+    "existingReader": "Erfahrener Leser"
+  },
+  "guide": {
+    "title": "Wie man BookMatch verwendet",
+    "newReader": {
+      "title": "Für Neue Leser:",
+      "description": "Wählen Sie bis zu 3 Interessen, die Ihren Vorlieben entsprechen. Wir werden KI nutzen, um Bücher zu finden, die Ihnen gefallen werden, basierend auf Ihren Interessen."
+    },
+    "existingReader": {
+      "title": "Für Erfahrene Leser:",
+      "description": "Fügen Sie Bücher hinzu, die Sie bereits gelesen und genossen haben. Wir werden Ihre Lesegeschichte analysieren, um neue Bücher vorzuschlagen, die Ihrem Geschmack entsprechen."
+    },
+    "goal": {
+      "title": "Unser Ziel:",
+      "description": "BookMatch hilft Ihnen, Ihr nächstes Lieblingsbuch zu entdecken, indem es KI-Empfehlungen mit Ihren persönlichen Vorlieben kombiniert."
+    }
+  },
+  "newReader": {
+    "interests": {
+      "title": "Wählen Sie Ihre Interessen ({count} von 3)",
+      "description": "Wählen Sie bis zu 3 Interessen, die Ihren Vorlieben entsprechen. Wir werden KI nutzen, um Bücher zu finden, die Ihnen gefallen werden, basierend auf Ihren Interessen.",
+      "noRecommendations": "Keine Empfehlungen gefunden. Versuchen Sie, andere Interessen auszuwählen.",
+      "available": {
+        "fiction": "Belletristik",
+        "nonFiction": "Sachbuch",
+        "scienceFiction": "Science-Fiction",
+        "fantasy": "Fantasy",
+        "mystery": "Krimi",
+        "romance": "Liebesroman",
+        "biography": "Biografie",
+        "history": "Geschichte",
+        "selfHelp": "Persönlichkeitsentwicklung",
+        "business": "Wirtschaft",
+        "technology": "Technologie",
+        "science": "Wissenschaft",
+        "philosophy": "Philosophie",
+        "psychology": "Psychologie",
+        "art": "Kunst"
+      }
+    }
+  },
+  "existingReader": {
+    "title": "Fügen Sie gelesene Bücher hinzu",
+    "search": {
+      "placeholder": "Buch suchen...",
+      "loading": "Suche nach Büchern..."
+    },
+    "books": {
+      "title": "Ihre Bücher",
+      "getRecommendations": "Empfehlungen erhalten",
+      "noRecommendations": "Klicken Sie auf \"Empfehlungen erhalten\", um Bücher basierend auf Ihrer Lesegeschichte zu finden."
+    }
+  },
+  "book": {
+    "ratings": "Bewertungen",
+    "remove": "Entfernen"
+  },
+  "loading": {
+    "findingBooks": "Suche nach den perfekten Büchern für Sie..."
+  }
+} 
