@@ -100,4 +100,68 @@ export async function getBookRecommendationsByInterests(interests) {
     console.error('Error getting book recommendations:', error);
     throw error;
   }
-} 
+}
+
+export const getBookRecommendationsByBooks = async (books) => {
+  try {
+    const prompt = `Based on these books the user has read:
+${books.map(book => `- ${book.title} by ${book.authors.join(', ')}`).join('\n')}
+
+Please recommend 3 new books that the user might enjoy. For each recommendation, provide:
+1. The exact book title
+2. The author's name
+3. A brief explanation of why you're recommending this book
+
+Format your response as a JSON array with the following structure:
+[
+  {
+    "title": "Book Title",
+    "author": "Author Name",
+    "reason": "Why this book is recommended"
+  }
+]
+
+Return ONLY the JSON array, without any markdown formatting, backticks, or additional text.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    
+    // Clean the response by removing any markdown formatting
+    const cleanResponse = text
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+    
+    // Parse the JSON response
+    const recommendations = JSON.parse(cleanResponse);
+    
+    // Search for each recommended book in Google Books API
+    const bookDetails = await Promise.all(
+      recommendations.map(async (rec) => {
+        try {
+          const searchQuery = `${rec.title} ${rec.author}`;
+          const searchResults = await searchBooks(searchQuery);
+          
+          if (searchResults && searchResults.length > 0) {
+            const book = searchResults[0];
+            return {
+              ...book,
+              reason: rec.reason
+            };
+          }
+          return null;
+        } catch (error) {
+          console.error('Error searching for book:', error);
+          return null;
+        }
+      })
+    );
+
+    // Filter out any null results and return the recommendations
+    return bookDetails.filter(book => book !== null);
+  } catch (error) {
+    console.error('Error getting book recommendations:', error);
+    throw error;
+  }
+}; 

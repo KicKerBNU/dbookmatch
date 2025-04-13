@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { searchBooks } from '../utils/googleBooks'
-import { getBookRecommendationsByInterests } from '../utils/gemini'
+import { getBookRecommendationsByInterests, getBookRecommendationsByBooks } from '../utils/gemini'
 
 const userType = ref('new') // 'new' or 'existing'
 const interests = ref([])
@@ -13,6 +13,7 @@ const searchQuery = ref('')
 const searchResults = ref([])
 const isSearching = ref(false)
 const isGuideOpen = ref(false)
+const addedBooks = ref([])
 
 const availableInterests = [
   'Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy', 'Mystery',
@@ -29,6 +30,7 @@ const clearAllData = () => {
   searchResults.value = []
   isSearching.value = false
   isLoading.value = false
+  addedBooks.value = []
 }
 
 const switchToNewReader = () => {
@@ -87,21 +89,35 @@ const searchForBooks = async () => {
 }
 
 const getRecommendations = async () => {
-  if (interests.value.length === 0) {
-    recommendations.value = []
-    return
+  if (userType.value === 'new') {
+    if (interests.value.length === 0) {
+      recommendations.value = []
+      return
+    }
+    
+    isLoading.value = true
+    try {
+      recommendations.value = await getBookRecommendationsByInterests(interests.value)
+    } catch (error) {
+      console.error('Error getting recommendations:', error)
+      recommendations.value = []
+    } finally {
+      isLoading.value = false
+    }
+  } else {
+    if (readBooks.value.length === 0) return;
+    
+    isLoading.value = true;
+    try {
+      recommendations.value = await getBookRecommendationsByBooks(readBooks.value);
+    } catch (error) {
+      console.error('Error getting recommendations:', error);
+      recommendations.value = [];
+    } finally {
+      isLoading.value = false;
+    }
   }
-
-  isLoading.value = true
-  try {
-    recommendations.value = await getBookRecommendationsByInterests(interests.value)
-  } catch (error) {
-    console.error('Error getting recommendations:', error)
-    recommendations.value = []
-  } finally {
-    isLoading.value = false
-  }
-}
+};
 </script>
 
 <template>
@@ -221,7 +237,7 @@ const getRecommendations = async () => {
               Select your interests ({{ interests.length }} out of 3)
             </h3>
             <div class="flex flex-wrap gap-2 mb-4">
-              <transition-group
+              <TransitionGroup
                 enter-active-class="transition-all duration-300 ease-out"
                 enter-from-class="opacity-0 transform scale-95"
                 enter-to-class="opacity-100 transform scale-100"
@@ -229,17 +245,19 @@ const getRecommendations = async () => {
                 leave-from-class="opacity-100 transform scale-100"
                 leave-to-class="opacity-0 transform scale-95"
               >
-                <span 
-                  v-for="interest in interests" 
-                  :key="interest"
-                  class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full flex items-center gap-2"
-                >
-                  {{ interest }}
-                  <button @click="removeInterest(interest)" class="text-indigo-600 hover:text-indigo-800 cursor-pointer transition-colors duration-200">
-                    ×
-                  </button>
-                </span>
-              </transition-group>
+                <div key="interests-container" class="flex flex-wrap gap-2">
+                  <span 
+                    v-for="interest in interests" 
+                    :key="interest"
+                    class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full flex items-center gap-2"
+                  >
+                    {{ interest }}
+                    <button @click="removeInterest(interest)" class="text-indigo-600 hover:text-indigo-800 cursor-pointer transition-colors duration-200">
+                      ×
+                    </button>
+                  </span>
+                </div>
+              </TransitionGroup>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
               <button 
@@ -270,48 +288,49 @@ const getRecommendations = async () => {
           </transition>
 
           <!-- Recommendations -->
-          <transition-group
+          <TransitionGroup
             enter-active-class="transition-all duration-300 ease-out"
             enter-from-class="opacity-0 transform translate-y-4"
             enter-to-class="opacity-100 transform translate-y-0"
             leave-active-class="transition-all duration-300 ease-in"
             leave-from-class="opacity-100 transform translate-y-0"
             leave-to-class="opacity-0 transform translate-y-4"
-            class="space-y-6"
           >
-            <div 
-              v-for="book in recommendations" 
-              :key="book.id"
-              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300"
-            >
-              <div class="flex gap-6">
-                <img 
-                  v-if="book.thumbnail" 
-                  :src="book.thumbnail" 
-                  :alt="book.title"
-                  class="w-24 h-36 object-cover rounded-lg"
-                />
-                <div class="flex-1">
-                  <h4 class="text-lg font-semibold text-gray-800">{{ book.title }}</h4>
-                  <p class="text-gray-600">{{ book.authors.join(', ') }}</p>
-                  <p v-if="book.description" class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
-                  <div v-if="book.categories" class="mt-4 flex flex-wrap gap-2">
-                    <span 
-                      v-for="category in book.categories" 
-                      :key="category"
-                      class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
-                    >
-                      {{ category }}
-                    </span>
-                  </div>
-                  <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
-                    <span class="text-yellow-500">★</span>
-                    <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
+            <div key="new-recommendations-container" class="space-y-6">
+              <div 
+                v-for="book in recommendations" 
+                :key="book.id"
+                class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300"
+              >
+                <div class="flex gap-6">
+                  <img 
+                    v-if="book.thumbnail" 
+                    :src="book.thumbnail" 
+                    :alt="book.title"
+                    class="w-24 h-36 object-cover rounded-lg"
+                  />
+                  <div class="flex-1">
+                    <h4 class="text-lg font-semibold text-gray-800">{{ book.title }}</h4>
+                    <p class="text-gray-600">{{ book.authors.join(', ') }}</p>
+                    <p v-if="book.description" class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
+                    <div v-if="book.categories" class="mt-4 flex flex-wrap gap-2">
+                      <span 
+                        v-for="category in book.categories" 
+                        :key="category"
+                        class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
+                      >
+                        {{ category }}
+                      </span>
+                    </div>
+                    <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
+                      <span class="text-yellow-500">★</span>
+                      <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </transition-group>
+          </TransitionGroup>
 
           <!-- No Recommendations -->
           <transition
@@ -382,7 +401,16 @@ const getRecommendations = async () => {
 
               <!-- Added Books -->
               <div v-if="readBooks.length > 0" class="mt-4">
-                <h4 class="text-lg font-semibold text-gray-800 mb-2">Your Books</h4>
+                <div class="flex justify-between items-center mb-2">
+                  <h4 class="text-lg font-semibold text-gray-800">Your Books</h4>
+                  <button 
+                    @click="getRecommendations"
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 cursor-pointer"
+                    :disabled="isLoading"
+                  >
+                    Get Recommendations
+                  </button>
+                </div>
                 <div class="space-y-2">
                   <div 
                     v-for="book in readBooks" 
@@ -403,13 +431,77 @@ const getRecommendations = async () => {
                     </div>
                     <button 
                       @click="removeBook(book)"
-                      class="text-red-500 hover:text-red-700 cursor-pointer"
+                      class="text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-200"
                     >
                       Remove
                     </button>
                   </div>
                 </div>
               </div>
+
+              <!-- Loading State -->
+              <transition
+                enter-active-class="transition-opacity duration-300 ease-out"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition-opacity duration-300 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+              >
+                <div v-if="isLoading" class="text-center py-8">
+                  <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                  <p class="mt-4 text-gray-600">Finding the perfect books for you...</p>
+                </div>
+              </transition>
+
+              <!-- Recommendations -->
+              <TransitionGroup 
+                enter-active-class="transition-all duration-300 ease-out"
+                enter-from-class="opacity-0 transform translate-y-4"
+                enter-to-class="opacity-100 transform translate-y-0"
+                leave-active-class="transition-all duration-300 ease-in"
+                leave-from-class="opacity-100 transform translate-y-0"
+                leave-to-class="opacity-0 transform -translate-y-4"
+              >
+                <div key="existing-recommendations-container" class="space-y-6">
+                  <div v-if="!isLoading && recommendations.length === 0 && readBooks.length > 0" class="text-center py-8">
+                    <p class="text-gray-600">Click "Get Recommendations" to find books based on your reading history.</p>
+                  </div>
+
+                  <div 
+                    v-for="book in recommendations" 
+                    :key="book.id"
+                    class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300"
+                  >
+                    <div class="flex gap-6">
+                      <img 
+                        v-if="book.thumbnail" 
+                        :src="book.thumbnail" 
+                        :alt="book.title"
+                        class="w-24 h-36 object-cover rounded-lg"
+                      />
+                      <div class="flex-1">
+                        <h4 class="text-lg font-semibold text-gray-800">{{ book.title }}</h4>
+                        <p class="text-gray-600">{{ book.authors.join(', ') }}</p>
+                        <p v-if="book.description" class="mt-2 text-sm text-gray-500 line-clamp-3">{{ book.description }}</p>
+                        <div v-if="book.categories" class="mt-4 flex flex-wrap gap-2">
+                          <span 
+                            v-for="category in book.categories" 
+                            :key="category"
+                            class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
+                          >
+                            {{ category }}
+                          </span>
+                        </div>
+                        <div v-if="book.averageRating" class="mt-2 flex items-center gap-1">
+                          <span class="text-yellow-500">★</span>
+                          <span class="text-sm text-gray-600">{{ book.averageRating.toFixed(1) }} ({{ book.ratingsCount }} ratings)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </TransitionGroup>
             </div>
           </div>
         </div>
