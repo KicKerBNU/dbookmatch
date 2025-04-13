@@ -3,6 +3,15 @@ import { ref, computed } from 'vue'
 import { searchBooks } from '../utils/googleBooks'
 import { getBookRecommendationsByInterests, getBookRecommendationsByBooks } from '../utils/gemini'
 
+// Add debounce function
+const debounce = (fn, delay) => {
+  let timeoutId
+  return (...args) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => fn(...args), delay)
+  }
+}
+
 const userType = ref('new') // 'new' or 'existing'
 const interests = ref([])
 const readBooks = ref([])
@@ -87,6 +96,9 @@ const searchForBooks = async () => {
     isSearching.value = false
   }
 }
+
+// Create debounced version of searchForBooks
+const debouncedSearch = debounce(searchForBooks, 500)
 
 const getRecommendations = async () => {
   if (userType.value === 'new') {
@@ -358,7 +370,7 @@ const getRecommendations = async () => {
                   type="text"
                   placeholder="Search for a book..."
                   class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  @input="searchForBooks"
+                  @input="debouncedSearch"
                 />
               </div>
 
