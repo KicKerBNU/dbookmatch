@@ -51,11 +51,57 @@
             <span class="ml-3 text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">dbookmatch.com</span>
           </div>
         </div>
+        <div class="flex items-center space-x-4">
+          <div v-if="user" class="flex items-center space-x-4">
+            <span class="text-gray-700">{{ user.email }}</span>
+            <button
+              @click="handleLogout"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Logout
+            </button>
+          </div>
+          <div v-else class="flex items-center space-x-4">
+            <router-link
+              to="/login"
+              class="text-gray-700 hover:text-indigo-600"
+            >
+              Login
+            </router-link>
+            <router-link
+              to="/signup"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign up
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-// Component logic can be added here if needed
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { onAuthStateChange, logout } from '../firebase/auth';
+import { auth } from '../firebase/config';
+
+const router = useRouter();
+const user = ref(null);
+
+onMounted(() => {
+  onAuthStateChange((currentUser) => {
+    user.value = currentUser;
+  });
+});
+
+const handleLogout = async () => {
+  try {
+    await logout();
+    router.push('/');
+  } catch (error) {
+    console.error('Error logging out:', error);
+  }
+};
 </script> 

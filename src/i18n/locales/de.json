@@ -65,5 +65,40 @@
   },
   "loading": {
     "findingBooks": "Suche nach den perfekten Büchern für Sie..."
+  },
+  "login": {
+    "welcome": "Willkommen zurück",
+    "subtitle": "Melden Sie sich in Ihrem Konto an, um fortzufahren",
+    "email": {
+      "label": "E-Mail-Adresse",
+      "placeholder": "Geben Sie Ihre E-Mail ein"
+    },
+    "password": {
+      "label": "Passwort",
+      "placeholder": "Geben Sie Ihr Passwort ein"
+    },
+    "signIn": "Anmelden",
+    "orContinue": "Oder fortfahren mit",
+    "googleSignIn": "Mit Google anmelden",
+    "noAccount": "Sie haben noch kein Konto?",
+    "signUp": "Registrieren"
+  },
+  "signup": {
+    "welcome": "Konto erstellen",
+    "subtitle": "Werden Sie Teil unserer Community für personalisierte Buchempfehlungen",
+    "email": {
+      "label": "E-Mail-Adresse",
+      "placeholder": "Geben Sie Ihre E-Mail ein"
+    },
+    "password": {
+      "label": "Passwort",
+      "placeholder": "Erstellen Sie ein Passwort"
+    },
+    "createAccount": "Konto erstellen",
+    "orContinue": "Oder fortfahren mit",
+    "googleSignUp": "Mit Google registrieren",
+    "haveAccount": "Sie haben bereits ein Konto?",
+    "signIn": "Anmelden",
+    "continueWithout": "Ohne Konto fortfahren"
   }
 } 

@@ -65,5 +65,58 @@
   },
   "loading": {
     "findingBooks": "Finding the perfect books for you..."
+  },
+  "login": {
+    "welcome": "Welcome back",
+    "subtitle": "Sign in to your account to continue",
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "signIn": "Sign in",
+    "orContinue": "Or continue with",
+    "googleSignIn": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "signup": {
+    "welcome": "Create your account",
+    "subtitle": "Join us to get personalized book recommendations",
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Create a password"
+    },
+    "createAccount": "Create Account",
+    "orContinue": "Or continue with",
+    "googleSignUp": "Sign up with Google",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "continueWithout": "Continue without account"
+  },
+  "errors": {
+    "auth": {
+      "invalid-email": "The email address is invalid.",
+      "user-disabled": "This account has been disabled.",
+      "user-not-found": "No account found with this email.",
+      "wrong-password": "The password is incorrect.",
+      "email-already-in-use": "This email is already registered.",
+      "operation-not-allowed": "This operation is not allowed.",
+      "weak-password": "The password is too weak.",
+      "account-exists-with-different-credential": "An account already exists with the same email but different sign-in credentials.",
+      "invalid-credential": "The email or password is incorrect.",
+      "network-request-failed": "A network error occurred. Please check your connection.",
+      "popup-closed-by-user": "The sign-in popup was closed before completing the sign-in.",
+      "popup-blocked": "The sign-in popup was blocked by your browser. Please allow popups for this site.",
+      "cancelled-popup-request": "Another sign-in attempt is in progress.",
+      "default": "An error occurred during authentication. Please try again."
+    }
   }
 } 

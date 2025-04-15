@@ -65,5 +65,58 @@
   },
   "loading": {
     "findingBooks": "Encontrando os livros perfeitos para você..."
+  },
+  "login": {
+    "welcome": "Bem-vindo de volta",
+    "subtitle": "Entre na sua conta para continuar",
+    "email": {
+      "label": "Endereço de e-mail",
+      "placeholder": "Digite seu e-mail"
+    },
+    "password": {
+      "label": "Senha",
+      "placeholder": "Digite sua senha"
+    },
+    "signIn": "Entrar",
+    "orContinue": "Ou continue com",
+    "googleSignIn": "Entrar com Google",
+    "noAccount": "Não tem uma conta?",
+    "signUp": "Cadastre-se"
+  },
+  "signup": {
+    "welcome": "Crie sua conta",
+    "subtitle": "Junte-se a nós para receber recomendações personalizadas de livros",
+    "email": {
+      "label": "Endereço de e-mail",
+      "placeholder": "Digite seu e-mail"
+    },
+    "password": {
+      "label": "Senha",
+      "placeholder": "Crie uma senha"
+    },
+    "createAccount": "Criar Conta",
+    "orContinue": "Ou continue com",
+    "googleSignUp": "Cadastre-se com Google",
+    "haveAccount": "Já tem uma conta?",
+    "signIn": "Entrar",
+    "continueWithout": "Continuar sem conta"
+  },
+  "errors": {
+    "auth": {
+      "invalid-email": "O endereço de e-mail é inválido.",
+      "user-disabled": "Esta conta foi desativada.",
+      "user-not-found": "Nenhuma conta encontrada com este e-mail.",
+      "wrong-password": "A senha está incorreta.",
+      "email-already-in-use": "Este e-mail já está cadastrado.",
+      "operation-not-allowed": "Esta operação não é permitida.",
+      "weak-password": "A senha é muito fraca.",
+      "account-exists-with-different-credential": "Já existe uma conta com o mesmo e-mail, mas com credenciais de login diferentes.",
+      "invalid-credential": "O e-mail ou senha está incorreto.",
+      "network-request-failed": "Ocorreu um erro de rede. Verifique sua conexão.",
+      "popup-closed-by-user": "A janela de login foi fechada antes de completar o processo.",
+      "popup-blocked": "A janela de login foi bloqueada pelo seu navegador. Por favor, permita popups para este site.",
+      "cancelled-popup-request": "Outra tentativa de login está em andamento.",
+      "default": "Ocorreu um erro durante a autenticação. Por favor, tente novamente."
+    }
   }
 } 

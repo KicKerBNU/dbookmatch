@@ -65,5 +65,40 @@
   },
   "loading": {
     "findingBooks": "De perfecte boeken voor jou zoeken..."
+  },
+  "login": {
+    "welcome": "Welkom terug",
+    "subtitle": "Log in op je account om door te gaan",
+    "email": {
+      "label": "E-mailadres",
+      "placeholder": "Voer je e-mailadres in"
+    },
+    "password": {
+      "label": "Wachtwoord",
+      "placeholder": "Voer je wachtwoord in"
+    },
+    "signIn": "Inloggen",
+    "orContinue": "Of ga verder met",
+    "googleSignIn": "Inloggen met Google",
+    "noAccount": "Heb je nog geen account?",
+    "signUp": "Registreren"
+  },
+  "signup": {
+    "welcome": "Maak je account aan",
+    "subtitle": "Word lid van onze community voor gepersonaliseerde boekaanbevelingen",
+    "email": {
+      "label": "E-mailadres",
+      "placeholder": "Voer je e-mailadres in"
+    },
+    "password": {
+      "label": "Wachtwoord",
+      "placeholder": "Maak een wachtwoord aan"
+    },
+    "createAccount": "Account aanmaken",
+    "orContinue": "Of ga verder met",
+    "googleSignUp": "Registreren met Google",
+    "haveAccount": "Heb je al een account?",
+    "signIn": "Inloggen",
+    "continueWithout": "Doorgaan zonder account"
   }
 } 
